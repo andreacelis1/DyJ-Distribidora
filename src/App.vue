@@ -5,10 +5,7 @@
   <v-card max-width="2200" class="mx-auto" color="tercero">
     <v-layout>
       <v-app-bar
-        color="#F48FB1"
-      >
-
-
+        color="#F48FB1">
         <template v-slot:prepend>
           <v-list-item
           prepend-icon="mdi-account-heart"
@@ -64,12 +61,6 @@
           <v-list-item prepend-icon="mdi-account tie outline" title="Clientes" value="users" router-link to="/clientes"></v-list-item>
           <v-list-item prepend-icon="mdi-account tie outline" title="Crear Usuarios" value="users" router-link to="/CrearUsuarios"></v-list-item>
           <v-list-item prepend-icon="mdi-account tie outline" title="Usuarios" value="users" router-link to="/Usuarios"></v-list-item>
-
-
-
-
-
-
           
         </v-list>
       </v-navigation-drawer>
@@ -85,15 +76,8 @@
 </template>
 
 <script>
-/* import HelloWorld from './components/HelloWorld.vue'
- */
 export default {
   name: 'App',
-
-  components: {
-/*     HelloWorld,
- */  },
-
   data: () => ({
     drawer: true,
     rail: true,

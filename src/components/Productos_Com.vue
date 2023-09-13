@@ -1,96 +1,273 @@
-<template>
-    <div>
-        <div>
-            <div class="texttle">
-                <input type="text" v-model="nombrenew" v-on:keypress.enter="nuevoitem()" /><br>
-                <input type="text" v-model="apellidonew" v-on:keypress.enter="nuevoitem()"/><br>
-                <input type="text" v-model="cedulanew" v-on:keypress.enter="nuevoitem()"/><br>
-                <input type="text" v-model="telefononew" v-on:keypress.enter="nuevoitem()"/><br>
-                <input type="text" v-model="correonew" v-on:keypress.enter="nuevoitem()"/><br>
-                <input type="text" v-model="direccionnew" v-on:keypress.enter="nuevoitem()"/><br>
-            </div>
-            <table border= 1 class="datospersona">
-                <thead>
-                <tr>
-                    <th>Numero</th>
-                    <th>Nombre</th>
-                    <th>Apellido</th>
-                    <th>Cedula</th>
-                    <th>Telefono</th>
-                    <th>Correo</th>
-                    <th>Direccion</th>
-                </tr>
-                </thead>
-                    <tbody>
-                        <tr v-for="({nombre,apellido,cedula,telefono,correo,direccion,},index) in personas" :key="index">
-                            <td>{{ index+1 }}</td>
-                            <td>{{ nombre }}</td>
-                            <td>{{ apellido }}</td>
-                            <td>{{ cedula }}</td>
-                            <td>{{ telefono }}</td>
-                            <td>{{ correo }}</td>
-                            <td>{{ direccion }}</td>
-                        </tr>
-                    </tbody>
-            </table>
-        </div>
-    </div>
-</template>
 
-<script>
-    const personas = [
-        {nombre:"Andrea",apellido:"Celis",cedula:"68415561",correo:"celis651@gmail.com"},
-        {nombre:"ricardo",apellido:"Diaz",cedula:"68415561",correo:"rrdiaz@gmail.com"},
-        {nombre:"Alcira",apellido:"Leyva",cedula:"68415561",correo:"acl1598@gmail.com"},
-        {nombre:"Nicolle",apellido:"Quintero",cedula:"68415561",correo:"nq8974@gmail.com"},
-    ]
-    console.log(personas);
-    export default {
-        data(){
-        return{
-            personas,
-                nombreold:"Andrea Celis",
-                dato:"Digite texto",
-                nombrenew:"Digite Nombre",
-                apellidonew:"Digite Apellido",
-                cedulanew:"Digite Cedula",
-                telefononew:"Digite Telefono",
-                correonew:"Digite E-mail",
-                direccionnew:"Digite Direccion",
-    }
-},
-methods:{
-    nuevoitem(){
-        this.personas.unshift({
-        nombre:this.nombrenew,
-        apellido:this.apellidonew,
-        cedula:this.cedulanew,
-        telefono:this.telefononew,
-        correo:this.correonew,
-        direccion:this.direccionnew,
+<template> 
+
+    <v-container>
+      <v-data-table
+        :headers="headers"
+        :items="desserts"
+        :sort-by="[{ key: 'calories', order: 'asc' }]"
+        class="elevation-1"
+      >
+        <template v-slot:top>
+          <v-toolbar
+            flat
+          >
+            <v-toolbar-title>Lista de Productos</v-toolbar-title>
+            <v-divider
+              class="mx-4"
+              inset
+              vertical
+            ></v-divider>
+            <v-spacer></v-spacer>
+            <v-dialog
+              v-model="dialog"
+              max-width="500px"
+            >
+              <template v-slot:activator="{ props }">
+                <v-btn
+                  color="primary"
+                  dark
+                  class="mb-2"
+                  v-bind="props"
+                >
+                  Añadir Productos
+                </v-btn>
+              </template>
+              <v-card>
+                <v-card-title>
+                  <span class="text-h5">{{ formTitle }}</span>
+                </v-card-title>
+    
+                <v-card-text>
+                  <v-container>
+                    <v-row>
+                      <v-col
+                        cols="12"
+                        sm="6"
+                        md="4"
+                      >
+                        <v-text-field
+                          v-model="editedItem.id"
+                          label="Id"
+                        ></v-text-field>
+                      </v-col>
+                      <v-col
+                        cols="12"
+                        sm="6"
+                        md="4"
+                      >
+                        <v-text-field
+                          v-model="editedItem.usuario"
+                          label="Usuario"
+                        ></v-text-field>
+                      </v-col>
+                      <v-col
+                        cols="12"
+                        sm="6"
+                        md="4"
+                      >
+                        <v-text-field
+                          v-model="editedItem.clave"
+                          label="clave"
+                        ></v-text-field>
+                      </v-col>
+    
+                    </v-row>
+                  </v-container>
+                </v-card-text>
+    
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <v-btn
+                    color="blue-darken-1"
+                    variant="text"
+                    @click="close"
+                  >
+                    Cancelar
+                  </v-btn>
+                  <v-btn
+                    color="blue-darken-1"
+                    variant="text"
+                    @click="save"
+                  >
+                    Guardar
+                  </v-btn>
+                </v-card-actions>
+              </v-card>
+            </v-dialog>
+            <v-dialog v-model="dialogDelete" max-width="500px">
+              <v-card>
+                <v-card-title class="text-h5">Deseas eliminar este Producto?</v-card-title>
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <v-btn color="blue-darken-1" variant="text" @click="closeDelete">Cancelar</v-btn>
+                  <v-btn color="blue-darken-1" variant="text" @click="deleteItemConfirm">Confirmar</v-btn>
+                  <v-spacer></v-spacer>
+                </v-card-actions>
+              </v-card>
+            </v-dialog>
+          </v-toolbar>
+        </template>
+        <template v-slot:[`item.actions`]="{ item }">
+          <v-icon
+            size="small"
+            class="me-2"
+            @click="editItem(item.raw)"
+          >
+            mdi-pencil
+          </v-icon>
+          <v-icon
+            size="small"
+            @click="deleteItem(item.raw)"
+          >
+            mdi-delete
+          </v-icon>
+        </template>
+        <template v-slot:no-data>
+          <v-btn
+            color="primary"
+            @click="initialize"
+          >
+            Reset
+          </v-btn>
+        </template>
+      </v-data-table>
+    </v-container>
+    
+      </template>
+    
+    
+    <script>
+    
+    import db from '../firebase/init.js'
+    import {collection, getDocs, query, addDoc} from  'firebase/firestore'
+    
+      export default{
+       /*  created(){ */
+         /* this.createUsuario();  */
+    /*     }, */
+      data: () => ({
+          dialog: false,
+          dialogDelete: false,
+          headers: [
+            {
+          /*     title: 'Dessert (100g serving)', */
+              align: 'start',
+              sortable: false,
+              key: 'name',
+            },
+            { title: 'Id', key: 'id' },
+            { title: 'Nombre', key: 'usuario' },
+            { title: 'Contraseña', key: 'clave' },
+            { title: 'Actions', key: 'actions', sortable: false },
+          ],
+          desserts: [],
+          editedIndex: -1,
+          editedItem: {
+            id: 0,
+            usuario: 0,
+            clave: 0,
+          },
+          defaultItem: {
+            id: 0,
+            usuario: 0,
+            clave: 0,
+          },
+        }),
+    
+        computed: {
+          formTitle () {
+            return this.editedIndex === -1 ? 'Nuevo Producto' : 'Actualizar Producto'
+          },
+        },
+    
+        watch: {
+          dialog (val) {
+            val || this.close()
+          },
+          dialogDelete (val) {
+            val || this.closeDelete()
+          },
+        },
+    
+        created () {
+       /*    this.initialize() */
+          this.listarUsuarios()
+        },
+    
+    
+        methods: {
+    
+          async createUser(){
+            const colRef = collection(db, 'user')
+            const dataObj = {
+                id: this.editedItem.id,
+                usuario: this.editedItem.usuario,
+                clave: this.editedItem.clave
+            }
+            const docRef = await addDoc(colRef, dataObj);
+            console.log("Creo el usuario ", docRef.id)
+        },
+    
+          async listarUsuarios(){
+            const q = query(collection(db, "user"));
+            const resul = await getDocs(q);
+            resul.forEach((doc)=>{
+              console.log("datos ",doc.data());
+              this.desserts.push(doc.data())
+             
             })
-        }
-    }
-}
-
-</script>
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-
-div{
-    color: #F06292;
-}
-.datospersona{
-    text-align:center;
-    margin-top: 5%;
-    margin-left: auto;
-    margin-right: auto;
-    width: 90%;
-}    
-.texttle{
-    text-align:center;
-    margin-top: 6%;
-    width: 90%;
-    color: #F06292;
-}
-</style>
+          },
+    
+          initialize () {
+            this.desserts = [
+            ]
+          },
+    
+          editItem (item) {
+            this.editedIndex = this.desserts.indexOf(item)
+            this.editedItem = Object.assign({}, item)
+            this.dialog = true
+          },
+    
+          deleteItem (item) {
+            this.editedIndex = this.desserts.indexOf(item)
+            this.editedItem = Object.assign({}, item)
+            this.dialogDelete = true
+          },
+    
+          deleteItemConfirm () {
+            this.desserts.splice(this.editedIndex, 1)
+            this.closeDelete()
+          },
+    
+          close () {
+            this.dialog = false
+            this.$nextTick(() => {
+              this.editedItem = Object.assign({}, this.defaultItem)
+              this.editedIndex = -1
+            })
+          },
+    
+          closeDelete () {
+            this.dialogDelete = false
+            this.$nextTick(() => {
+              this.editedItem = Object.assign({}, this.defaultItem)
+              this.editedIndex = -1
+            })
+          },
+    
+          save () {
+            if (this.editedIndex > -1) {
+              Object.assign(this.desserts[this.editedIndex], this.editedItem)
+            } else {
+              this.desserts.push(this.editedItem)
+              this.createUser()
+            }
+            this.close()
+          },
+    
+        },
+    
+    }   
+    </script>
