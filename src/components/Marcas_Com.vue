@@ -12,7 +12,7 @@
           <v-toolbar
             flat
           >
-            <v-toolbar-title>Lista de Productos</v-toolbar-title>
+            <v-toolbar-title>Marcas</v-toolbar-title>
             <v-divider
               class="mx-4"
               inset
@@ -29,7 +29,8 @@
                   dark
                   v-bind="props"
                 >
-                  Añadir Productos
+                  Añadir Marca
+                  
                 </v-btn>
                 <v-btn
                 color="primary"
@@ -57,94 +58,17 @@
                           label="Id"
                         ></v-text-field>
                       </v-col>
-
                       <v-col
                         cols="12"
                         sm="6"
                         md="4"
                       >
                         <v-text-field
-                          v-model="editedItem.referencia"
-                          label="referencia"
+                          v-model="editedItem.marcas"
+                          label="marcas"
                         ></v-text-field>
                       </v-col>
-
-                      <v-col
-                        cols="12"
-                        sm="6"
-                        md="4"
-                      >
-                        <v-text-field
-                          v-model="editedItem.nombre"
-                          label="nombre"
-                        ></v-text-field>
-                      </v-col>
-
-                      <v-col
-                        cols="12"
-                        sm="6"
-                        md="4"
-                      >
-                        <v-text-field
-                          v-model="editedItem.descripcion"
-                          label="descripcion"
-                        ></v-text-field>
-                      </v-col>
-
-                      <v-col
-                        cols="12"
-                        sm="6"
-                        md="4"
-                      >
-                        <v-text-field
-                          v-model="editedItem.categoria"
-                          label="categoria"
-                        ></v-text-field>
-                      </v-col>
-
-                      <v-col
-                        cols="12"
-                        sm="6"
-                        md="4"
-                      >
-                        <v-text-field
-                          v-model="editedItem.marca"
-                          label="marca"
-                        ></v-text-field>
-                      </v-col>
-
-                      <v-col
-                        cols="12"
-                        sm="6"
-                        md="4"
-                      >
-                        <v-text-field
-                          v-model="editedItem.precio_und"
-                          label="precio_und"
-                        ></v-text-field>
-                      </v-col>
-
-                      <v-col
-                        cols="12"
-                        sm="6"
-                        md="4"
-                      >
-                        <v-text-field
-                          v-model="editedItem.costo"
-                          label="costo"
-                        ></v-text-field>
-                      </v-col>
-
-                      <v-col
-                        cols="12"
-                        sm="6"
-                        md="4"
-                      >
-                        <v-text-field
-                          v-model="editedItem.stock"
-                          label="stock"
-                        ></v-text-field>
-                      </v-col>
+  
     
                     </v-row>
                   </v-container>
@@ -171,7 +95,7 @@
             </v-dialog>
             <v-dialog v-model="dialogDelete" max-width="500px">
               <v-card>
-                <v-card-title class="text-h5">Deseas eliminar este Producto?</v-card-title>
+                <v-card-title class="text-h5">Deseas eliminar esta Marca?</v-card-title>
                 <v-card-actions>
                   <v-spacer></v-spacer>
                   <v-btn color="blue-darken-1" variant="text" @click="closeDelete">Cancelar</v-btn>
@@ -207,16 +131,13 @@
         </template>
       </v-data-table>
     </v-container>
-    
       </template>
-    
-    
     <script>
     
     import db from '../firebase/init.js'
-    import {collection, getDocs, query, addDoc,updateDoc,doc,deleteDoc } from  'firebase/firestore'
+    import {collection, getDocs, query, addDoc,updateDoc,doc, deleteDoc} from  'firebase/firestore'
     import jsPDF from 'jspdf'
-    require('jspdf-autotable')
+    require('jspdf-autotable')    
       export default{
        /*  created(){ */
          /* this.createUsuario();  */
@@ -232,46 +153,25 @@
               key: 'name',
             },
             { title: 'Id', key: 'id' },
-            { title: 'Referencia', key: 'referencia' },
-            { title: 'Nombre', key: 'nombre' },
-            { title: 'Descripcion', key: 'descripcion' },
-            { title: 'Categoria', key: 'categoria' },
-            { title: 'Marca', key: 'marca' },
-            { title: 'Precio', key: 'precio_und' },
-            { title: 'Costo', key: 'costo' },
-            { title: 'Stock', key: 'stock' },
-            { title: 'Opciones', key: 'actions', sortable: false },
+            { title: 'Marca', key: 'marcas' },
+            { title: 'Actions', key: 'actions', sortable: false },
           ],
           desserts: [],
           editedIndex: -1,
           editedItem: {
+            keyid: '',
             id: '',
-            referencia: '',
-            nombre: '',
-            descripcion: '',
-            categoria: '',
-            marca: '',
-            precio_und: '',
-            costo: '',
-            stock: '',
-
+            marcas: '',
           },
           defaultItem: {
             id: '',
-            referencia: '',
-            nombre: '',
-            descripcion: '',
-            categoria: '',
-            marca: '',
-            precio_und: '',
-            costo: '',
-            stock: '',
+            marcas: '',
           },
         }),
     
         computed: {
           formTitle () {
-            return this.editedIndex === -1 ? 'Nuevo Producto' : 'Actualizar Producto'
+            return this.editedIndex === -1 ? 'Nueva Marca' : 'Actualizar Marca'
           },
         },
     
@@ -298,21 +198,7 @@ let columns = [
 
   { title: "Id", dataKey: "id" },
 
-  { title: "Referenci", dataKey: "referencia" },
-
-  { title: "Nombre", dataKey: "nombre" },
-
-  { title: "Descripcion", dataKey: "descripcion" },
-
-  { title: "Categoria", dataKey: "categoria" },
-
-  { title: "Marca", dataKey: "marca" },
-
-  { title: "Precio", dataKey: "precio" },
-
-  { title: "Costo", dataKey: "costo" },
-
-  { title: "Stock", dataKey: "stock" },
+  { title: "Marca", dataKey: "marcas" },
 
 ];
 
@@ -326,83 +212,60 @@ doc.autoTable(columns, registros, {
 
   addPageContent: function () {
 
-    doc.text("Productos", 40, 30);
+    doc.text("Marcas", 40, 30);
 
   },
 
 });
 
-doc.save("Productos.pdf");
+doc.save("Marcas.pdf");
 
 },
-
-        async limpiarCrud(){
-        this.desserts=[]
-        },
+          async limpiarCrud(){
+  
+            this.desserts=[]
+          },
     
           async createUser(){
-            const colRef = collection(db, 'productos')
+            const colRef = collection(db, 'marcas')
             const dataObj = {
                 id: this.editedItem.id,
-                referencia: this.editedItem.referencia,
-                nombre: this.editedItem.nombre,
-                descripcion: this.editedItem.descripcion,
-                categoria: this.editedItem.categoria,
-                marca: this.editedItem.marca,
-                precio_und: this.editedItem.precio_und,
-                costo: this.editedItem.costo,
-                stock: this.editedItem.stock
-
+                marcas: this.editedItem.marcas,
             }
             const docRef = await addDoc(colRef, dataObj);
-            console.log("Creo el producto ", docRef.id)
+            console.log("Creo la marca ", docRef.id)
         },
     
           async listarUsuarios(){
-            const q = query(collection(db, "productos"));
+            const q = query(collection(db, "marcas"));
             const resul = await getDocs(q);
             resul.forEach((doc)=>{
-              console.log("datos ",doc.data());
-              this.desserts.push ({
-              keyid:doc.id,
-              id:doc.data().id,
-              referencia:doc.data().referencia,
-              nombre:doc.data().nombre,
-              descripcion:doc.data().descripcion,
-              categoria:doc.data().categoria,
-              marca:doc.data().marca,
-              precio_und:doc.data().precio_und,
-              costo:doc.data().costo,
-              stock:doc.data().stock,
-              })
-             
+              console.log("id",doc.id);
+              this.desserts.push({
+                keyid:doc.id,
+                id:doc.data().id,
+                marcas:doc.data().marcas,
+                })
             })
           },
-
-          async ActualizarProductos(){
-          console.log(this.editedItem.keyid)
-          const Ref = (doc(db, "productos",this.editedItem.keyid));
-          await updateDoc (Ref,{
-            referencia: this.editedItem.referencia,
-                nombre: this.editedItem.nombre,
-                descripcion: this.editedItem.descripcion,
-                categoria: this.editedItem.categoria,
-                marca: this.editedItem.marca,
-                precio_und: this.editedItem.precio_und,
-                costo: this.editedItem.costo,
-                stock: this.editedItem.stock
-          }).then(console.log("Termino update Productos"))
-          .catch(function(error){
-            console.log(error)
-          });
-        },
-
-        async EliminarProductos(){
-          await deleteDoc(doc(db, "productos",this.editedItem.keyid))
+  
+          async ActualizarUsuarios(){
+            console.log(this.editedItem.keyid)
+            const Ref = (doc(db, "marcas",this.editedItem.keyid));
+            await updateDoc (Ref,{
+              marcas: this.editedItem.marcas,
+            }).then(console.log("Termino update marca"))
+            .catch(function(error){
+              console.log(error)
+            });
           },
-
-       
-          initialize () {
+  
+          async EliminarUsuarios(){
+            await deleteDoc(doc(db, "marcas",this.editedItem.keyid))
+            },
+  
+  
+          initialize () {   
             this.desserts = [
             ]
           },
@@ -411,18 +274,20 @@ doc.save("Productos.pdf");
             this.editedIndex = this.desserts.indexOf(item)
             this.editedItem = Object.assign({}, item)
             this.dialog = true
+            this.ActualizarUsuarios();
           },
     
           deleteItem (item) {
             this.editedIndex = this.desserts.indexOf(item)
             this.editedItem = Object.assign({}, item)
             this.dialogDelete = true
+  
           },
     
           deleteItemConfirm () {
             this.desserts.splice(this.editedIndex, 1)
-            this.closeDelete()
-            this.EliminarProductos()
+            this.closeDelete();
+            this.EliminarUsuarios();
           },
     
           close () {
@@ -444,12 +309,12 @@ doc.save("Productos.pdf");
           save () {
             if (this.editedIndex > -1) {
               Object.assign(this.desserts[this.editedIndex], this.editedItem)
-              this.ActualizarProductos()
-              this.limpiarCrud()
-              this.listarUsuarios()
+              this.ActualizarUsuarios();
+              this.limpiarCrud();
+              this.listarUsuarios();
             } else {
               this.desserts.push(this.editedItem)
-              this.createUser()
+              this.createUser();
               this.limpiarCrud();
               this.listarUsuarios();
             }
@@ -458,5 +323,6 @@ doc.save("Productos.pdf");
     
         },
     
-    }   
+    }
+
     </script>
