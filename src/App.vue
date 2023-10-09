@@ -33,7 +33,7 @@
         <v-spacer></v-spacer>
 
         <v-btn>
-          <v-list-item prepend-icon="mdi-account tie outline" title="Login" value="users" router-link to="/Login"></v-list-item>
+          <v-list-item prepend-icon="mdi-account tie outline" title="login" value="users" router-link to="/login_view"></v-list-item>
         </v-btn>
         <v-btn icon>
           <v-icon>mdi-cart heart</v-icon>
@@ -55,12 +55,12 @@
         <v-list density="compact" nav>
         <!--   <v-list-item prepend-icon="mdi-home-city" title="Home" value="home"></v-list-item> -->
         <v-list-item prepend-icon="mdi-bank" title="Home" value="account" router-link to="/"></v-list-item>
-          <v-list-item prepend-icon="mdi-account-group" title="Proveedores" value="account" router-link to="/Proveedores"></v-list-item>
+        <v-list-item prepend-icon="mdi-view-comfy" title="Marcas" value="users" router-link to="/Marcas"></v-list-item>
           <v-list-item prepend-icon="mdi-view-comfy" title="Categorias" value="users" router-link to="/categorias"></v-list-item>
+          <v-list-item prepend-icon="mdi-account-group" title="Proveedores" value="account" router-link to="/Proveedores"></v-list-item>
           <v-list-item prepend-icon="mdi-shopping card" title="Productos" value="users" router-link to="/productos"></v-list-item>
           <v-list-item prepend-icon="mdi-account tie outline" title="Clientes" value="users" router-link to="/clientes"></v-list-item>
           <v-list-item prepend-icon="mdi-account tie outline" title="Crear Usuarios" value="users" router-link to="/CrearUsuarios"></v-list-item>
-          <v-list-item prepend-icon="mdi-account tie outline" title="Usuarios" value="users" router-link to="/Usuarios"></v-list-item>
           
         </v-list>
       </v-navigation-drawer>
