@@ -1,4 +1,4 @@
-<script setup>
+<!-- <script setup>
 import { ref } from "vue"
 import {useUserStore} from "../stores/user.js"
 
@@ -87,4 +87,7 @@ const register = () => {
     border: none;
     cursor: pointer;
   }
-  </style>
+  </style> -->
+  <template>
+    hola
+  </template>

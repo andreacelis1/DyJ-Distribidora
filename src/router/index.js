@@ -9,6 +9,9 @@ import CrearUsuarios from '../components/Crear_Usuarios_Com.vue';
 import register from '../components/register_view.vue';
 import login from '../components/login_view.vue';
 import Marcas from '../components/Marcas_Com.vue';
+import Compras from '../components/Compras_Com.vue';
+import Ventas from '../components/Ventas_Com.vue';
+
 
 
 
@@ -17,8 +20,9 @@ import Marcas from '../components/Marcas_Com.vue';
 
 const routes = [
     { path: "/login_view", name: "login_view", component: login, },
-    { path: "/register_view", name: "register_view", component: register, },
     { path: "/", name: "Home", component: Home, },
+
+    { path: "/register_view", name: "register_view", component: register, },
     { path: "/Categorias", name: "Categorias", component: Categorias, },
     { path: "/Marcas", name: "Marcas", component: Marcas, },
     { path: "/Proveedores", name: "Proveedores", component: Proveedores, },
@@ -26,8 +30,8 @@ const routes = [
     { path: "/Productos", name: "Productos", component: Productos, },
     { path: "/Clientes", name: "Clientes", component: Clientes, },
     { path: "/CrearUsuarios", name: "Crear Usuarios", component: CrearUsuarios, },
-
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
+    { path: "/Compras", name: "Compras", component: Compras, },
+    { path: "/Ventas", name: "Ventas", component: Ventas, },
 
 
 ]

@@ -1,9 +1,6 @@
 <template>
   <div class="hello">
     <h1>Soy Ventas</h1>
-    <v-img alt="ventas logo" src="../assets/ventas.png"></v-img>
-
-
   </div>
 </template>
     
@@ -25,25 +22,7 @@ export default {
 </script>
 
 <style scoped>
-h3 {
-  margin: 40px 0 0;
-}
-
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-
-a {
-  color: #42b983;
-}
-
-img {
-  width: 20%;
+h1{
+  text-align: center;
 }
 </style>

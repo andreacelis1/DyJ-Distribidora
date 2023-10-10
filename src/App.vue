@@ -10,8 +10,10 @@
           <v-list-item
           prepend-icon="mdi-account-heart"
           title="DyJ Distribuidora"
+          
           nav
         >
+        
           <template v-slot:append>
             <v-btn
               variant="text"
@@ -19,6 +21,8 @@
               @click.stop="rail = !rail"
             ></v-btn>
             <v-btn>
+
+              
 
 
             </v-btn>
@@ -61,7 +65,9 @@
           <v-list-item prepend-icon="mdi-shopping card" title="Productos" value="users" router-link to="/productos"></v-list-item>
           <v-list-item prepend-icon="mdi-account tie outline" title="Clientes" value="users" router-link to="/clientes"></v-list-item>
           <v-list-item prepend-icon="mdi-account tie outline" title="Crear Usuarios" value="users" router-link to="/CrearUsuarios"></v-list-item>
-          
+          <v-list-item prepend-icon="mdi-account tie outline" title="Compras" value="users" router-link to="/Compras"></v-list-item>
+          <v-list-item prepend-icon="mdi-account tie outline" title="Ventas" value="users" router-link to="/Ventas"></v-list-item>
+
         </v-list>
       </v-navigation-drawer>
       <v-main style="height: 1000px"><RouterView></RouterView></v-main>

@@ -1,104 +1,170 @@
+<template>
+  <div>
+    <v-card
+      class="mx-auto pa-12 pb-8 form_login" 
+      elevation="8"
+      max-width="448"
+      rounded="lg"
+    >
+    
+      <v-img
+        class="mx-auto my-6"
+        max-width="228"
+      ></v-img>
+
+      <v-alert
+            v-if="showAlert"
+            type="info"
+            text="Usuario o contraseña incorrecto, intente nuevamente!"
+            variant="tonal"
+          ></v-alert>
+    <!--   <p v-if="errorMessage" class="menError">{{ errorMessage }}</p> -->
+      <br>
+
+      <div class="text-subtitle-1 text-medium-emphasis">Usuario</div>
+
+      <v-text-field
+        v-model="usuario"
+        class="usuario"
+        ref="usuarioField"
+        density="compact"
+        placeholder="Usuario"
+        prepend-inner-icon="mdi-account-circle-outline"
+        variant="outlined"
+      ></v-text-field>
+
+      <div class="text-subtitle-1 text-medium-emphasis d-flex align-center justify-space-between">
+        Contraseña
+      </div>
+
+      <v-text-field
+        v-model="clave"
+        class="clave"
+        :append-inner-icon="visible ? 'mdi-eye-off' : 'mdi-eye'"
+        :type="visible ? 'text' : 'clave'"
+        density="compact"
+        placeholder="Ingrese contraseña"
+        prepend-inner-icon="mdi-lock-outline"
+        variant="outlined"
+        @click:append-inner="visible = !visible"
+      ></v-text-field>
+
+      <v-btn
+        @click="validarUser"
+        block
+        class="mb-8"
+        size="large"
+        variant="tonal"
+      >
+        Log In
+      </v-btn>
+    </v-card>
+  </div>
+</template>
+
 <script setup>
-import { ref } from "vue";
-import { useUserStore } from "../stores/user.js";
+import { ref } from 'vue'
+const visible = ref(false)
 
-const email = ref ("")
-const password = ref ("")
-
-const userStore = useUserStore()
-
-  const login = () => {
-userStore.login(email.value, password.value);
-  };
 
 </script>
-<template>
-    <div class="login">
-      <h2>Login</h2>
-      <br @submit.prevent="login">
-        <div class="login__input">
-          <input type="text" required v-model="email"/>
-          <label>Username</label>
-        </div>
-        <div class="login__input">
-          <input type="password" required v-model="password" />
-          <label>Password</label>
-        </div>
 
-        <button class="login__submit" type="submit">Login</button><br><br><br>
-        <div class="text">
-        <v-list-item title="Register" value="users" router-link to="/register_view"></v-list-item>
-        </div>
-    </div>
-  </template>
-  
-  <style>
-  .login {
-    margin: 100px auto;
-    width: 400px;
-    padding: 40px;
-    background: #282828;
-    box-sizing: border-box;
-    box-shadow: 0 15px 25px rgba(0, 0, 0, 0.6);
-    border-radius: 10px;
-  }
-  
-  .login h2 {
-    margin-bottom: 30px;
-    color: #fff;
-    text-align: center;
-  }
-  
-  .login .login__input {
-    position: relative;
-  }
-  
-  .login .login__input input {
-    font-size: 18px;
-    width: 100%;
-    padding: 10px 0;
-    color: #fff;
-    margin-bottom: 30px;
-    border: none;
-    border-bottom: 1px solid #fff;
-    outline: none;
-    background: transparent;
-  }
-  .login .login__input label {
-    position: absolute;
-    top: 0;
-    left: 0;
-    padding: 10px 0;
-    color: #fff;
-    pointer-events: none;
-    transition: 0.5s;
-  }
-  
-  .login .login__input input:focus ~ label,
-  .login .login__input input:valid ~ label {
-    top: -20px;
-    left: 0;
-    color: #03e9f4;
-    font-size: 12px;
-  }
-  
-  .login__submit {
-    color: #1b1c1b;
-    padding: 0.7em 1.7em;
-    font-size: 18px;
-    border-radius: 0.5em;
-    background: #e8e8e8;
-    border: none;
-    cursor: pointer;
-  }
+<script>
+import db from '../firebase/init.js';
+import { collection, getDocs, query, where } from 'firebase/firestore';
+const showAlert = ref(false);
+/* import { useUserStore } from '../stores/user';
+const userStore = useUserStore(); */
 
-  .text{
-    color: #01eeff;
-    padding: 0.7em ;
-    font-size: 18px;
-    border-radius: 0.5em;
-    background: #e8e8e8;
-    cursor: pointer;
-    margin-right:200px;
-  }
-  </style>
+
+export default {
+  data() {
+    return {
+      usuario: '',
+      clave: '',
+      errorMessage: '',
+      showAlert: showAlert.value,
+
+    };
+  },
+
+  methods: {
+    
+
+    async validarUser() {
+      
+      //vuelvo vacia la bariable mensaje error
+      this.errorMessage = '';
+
+      const usuariosCollection = collection(db, 'user');
+      const q = query(usuariosCollection, where('usuario', '==', this.usuario), where('clave', '==', this.clave));
+
+    
+
+      try {
+        const querySnapshot = await getDocs(q);
+
+        if (!querySnapshot.empty) {
+          console.log('Usuario autenticado');
+
+
+          const fechaActual = new Date().toLocaleDateString(); //Fecha actual
+          this.bienvenidoMessage = `Bienvenido: ${fechaActual}`;
+          console.log(fechaActual);
+          //declaro la variable  
+          const usuarioDoc = querySnapshot.docs[0];    
+          // Extraigo el campo "nombre" del documento
+          const nombreUsuario = usuarioDoc.data().nombre;
+          const rolUsuario = usuarioDoc.data().rol;
+          console.log('Nombre del usuario logueado:', nombreUsuario, ' su rol es ', rolUsuario);   
+          //vuex
+          this.$store.state.usuario = nombreUsuario ; 
+          this.$store.state.rol = rolUsuario; 
+          this.$store.state.fechaActual = fechaActual ; 
+    
+
+          //Si es correcto lo lleva a Home
+          this.$router.push({ name: 'ViewHome' }); 
+  
+        } else {
+          // No se encontró un usuario con los datos ingresados, mostrar un mensaje de error.
+          console.log('Usuario no encontrado');
+          this.errorMessage = 'Credenciales incorrectas. Por favor, inténtalo de nuevo.';
+          showAlert.value = true;
+          // Puedes mostrar un mensaje de error al usuario aquí.
+          this.usuario = '';
+          this.clave = '';
+          this.$refs.usuarioField.focus();
+        }
+      } catch (error) {
+        console.error('Error al consultar la base de datos:', error);
+        // Maneja el error de consulta de la base de datos aquí.
+      }
+    },
+
+
+  },
+  
+
+};
+
+</script>
+
+
+<style scoped>
+
+.mb-8{
+  background: pink;
+  color:deeppink;
+}
+
+.mb-8:hover{
+  background: pink;
+  color:deeppink;
+}
+
+.form_login{
+  margin-top:8%;
+}
+
+</style>
