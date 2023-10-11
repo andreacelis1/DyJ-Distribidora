@@ -1,7 +1,7 @@
 
 <template> 
 
-    <v-container>
+    <v-container class="margen">
       <v-data-table
         :headers="headers"
         :items="desserts"
@@ -326,3 +326,10 @@ doc.save("Marcas.pdf");
     }
 
     </script>
+
+  <style>
+.margen{
+  width: 200%;
+  
+}
+</style>

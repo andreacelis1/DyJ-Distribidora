@@ -6,9 +6,12 @@ import Productos from '../components/Productos_Com.vue';
 import Clientes from '../components/Clientes_Com.vue';
 import Home from '../components/Home_Com.vue';
 import CrearUsuarios from '../components/Crear_Usuarios_Com.vue';
-import register from '../components/register_view.vue';
 import login from '../components/login_view.vue';
 import Marcas from '../components/Marcas_Com.vue';
+
+
+
+  
 
 
 
@@ -17,7 +20,6 @@ import Marcas from '../components/Marcas_Com.vue';
 
 const routes = [
     { path: "/login_view", name: "login_view", component: login, },
-    { path: "/register_view", name: "register_view", component: register, },
     { path: "/", name: "Home", component: Home, },
     { path: "/Categorias", name: "Categorias", component: Categorias, },
     { path: "/Marcas", name: "Marcas", component: Marcas, },
@@ -32,6 +34,8 @@ const routes = [
 
 ]
 
+  
+  
 const router = createRouter({
     history: createWebHistory(), routes
 });
