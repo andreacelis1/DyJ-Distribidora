@@ -1,7 +1,7 @@
 <template> 
 
-  <v-container>
-    <v-data-table
+  <v-container class="margen"  >
+    <v-data-table 
       :headers="headers"
       :items="desserts"
       :sort-by="[{ key: 'calories', order: 'asc' }]"
@@ -340,3 +340,11 @@ doc.save("crear usurios.pdf");
       },
     } 
   </script>
+
+  <style>
+  .margen{
+    width: 170%;
+    
+  }
+
+</style>

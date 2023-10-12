@@ -1,3 +1,4 @@
+
 import { createWebHistory, createRouter } from "vue-router";
 import Categorias from '../components/Categorias_Com.vue';
 import Proveedores from '../components/Proveedores_Com.vue';
@@ -6,12 +7,8 @@ import Productos from '../components/Productos_Com.vue';
 import Clientes from '../components/Clientes_Com.vue';
 import Home from '../components/Home_Com.vue';
 import CrearUsuarios from '../components/Crear_Usuarios_Com.vue';
-import login from '../components/login_view.vue';
+import login from '../components/login_vuex.vue';
 import Marcas from '../components/Marcas_Com.vue';
-
-
-
-  
 
 
 
@@ -19,7 +16,7 @@ import Marcas from '../components/Marcas_Com.vue';
 
 
 const routes = [
-    { path: "/login_view", name: "login_view", component: login, },
+    { path: "/login_vuex", name: "login_vuex", component: login, },
     { path: "/", name: "Home", component: Home, },
     { path: "/Categorias", name: "Categorias", component: Categorias, },
     { path: "/Marcas", name: "Marcas", component: Marcas, },
